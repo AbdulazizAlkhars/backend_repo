@@ -18,6 +18,12 @@ from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from trip import views
 
+from django.urls import path
+from django.contrib import admin
+from django.conf.urls.static import static
+from django.conf import settings
+from rest_framework import routers
+from trip import views
 
 
 urlpatterns = [
@@ -25,5 +31,12 @@ urlpatterns = [
     path("login/", TokenObtainPairView.as_view(), name="login"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
     path("register/", views.UserCreateAPIView.as_view(), name="register"),
-
+    path("profile/", views.UserProfileCreateAPIView.as_view(), name="Profile Creation"),
+    path("trip/create/", views.TripCreateAPIView.as_view(), name="Create Trip"),
+    path("trip/<int:trip_id>/", views.TripUpdateAPIView.as_view(), name="Trip Update"),
+    path("trip/<int:trip_id>/delete/", views.TripDeleteAPIView.as_view(), name="TripD elete"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
