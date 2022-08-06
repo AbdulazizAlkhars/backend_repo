@@ -34,7 +34,8 @@ urlpatterns = [
     path("profile/", views.UserProfileCreateAPIView.as_view(), name="Profile Creation"),
     path("trip/create/", views.TripCreateAPIView.as_view(), name="Create Trip"),
     path("trip/<int:trip_id>/", views.TripUpdateAPIView.as_view(), name="Trip Update"),
-    path("trip/<int:trip_id>/delete/", views.TripDeleteAPIView.as_view(), name="TripD elete"),
+    path("trip/<int:trip_id>/delete/", views.TripDeleteAPIView.as_view(), name="Trip Delete"),
+    path("trip/", views.TripListAPIView.as_view(), name="Trip List"),
 ]
 
 if settings.DEBUG:
