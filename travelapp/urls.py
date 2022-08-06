@@ -36,6 +36,7 @@ urlpatterns = [
     path("trip/<int:trip_id>/", views.TripUpdateAPIView.as_view(), name="Trip Update"),
     path("trip/<int:trip_id>/delete/", views.TripDeleteAPIView.as_view(), name="Trip Delete"),
     path("trip/", views.TripListAPIView.as_view(), name="Trip List"),
+    path("usertrip/<int:user_id>/", views.UserTripListAPIView.as_view(), name="User Trip List"),
 ] 
 
 if settings.DEBUG:

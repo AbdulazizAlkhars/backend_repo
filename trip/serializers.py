@@ -94,23 +94,23 @@ class TripCreateSerializer(serializers.ModelSerializer):
         return new_trip
 
 
-
-# class TripCreateSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Trip
-#         fields = ["title", "description", "image", "country", "like", "wants_to_visit"]
-#     def create(self, validated_data):
-#         title = validated_data["title"]
-#         description = validated_data["description"]
-#         image = validated_data["image"]
-#         country = validated_data["country"]
-#         like = validated_data["like"]
-#         wants_to_visit = validated_data["wants_to_visit"]
-#         new_trip = Trip(title=title, description=description, image=image, country=country, like=like, wants_to_visit=wants_to_visit)
-#         new_trip.save()
-#         return validated_data
+class TripListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Trip
+        fields = "__all__"
+        extra_kwargs = {
+            "user": {"read_only": True}
+        }
 
 
-"""As a user, I can press on the owner of a trip to view their profile
-Display the name of the owner of a trip for every trip on the app.
-This allows the user to view every other trip made by the same owner."""
+
+
+"""As a user, I can see another person's list of trips in their profile
+UserTripListAPIView"""
+class UserTripListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Trip
+        fields = ["title","description","image","country","like","wants_to_visit"]
+        extra_kwargs = {
+            "user": {"read_only": True}
+        }

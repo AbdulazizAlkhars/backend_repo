@@ -4,14 +4,6 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-"""When the user registers an account, the backend should automatically create an empty Profile
-associated with this new User account. The user should not have to create a Profile.
-My profile has my profile image, bio, and total number of trips. Total number of trips
-should not be stored in the database, it should be calculated in the frontend.
-Feel free to add more fields.
-
-also add a list of trip who are going to visit
-"""
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -24,20 +16,6 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
-
-
-"""User has to enter the `title`, `description`, and `image` of the trip.
-When creating a trip, automatically assign the logged-in user as the `owner` of this trip.
-This means that the `Trip` model also needs an `owner` relationship field with the `User` model.
-trip_id (int)
-title (str)
-description (str)
-image (str)
-Name of the country (string)
-Like (boolean)
-Wants to visit (boolean)
-
-"""
 
 
 

@@ -18,16 +18,6 @@ from django.contrib.auth import get_user_model
 
 # Create your views here.
 
-"""While Creating a User profile the following fields are required: 
-1- id
-2- username
-3- password
-4- First Name
-5- Last Name
-6- image
-
-and token would be generated for the user"""
-
 class UserCreateAPIView(generics.CreateAPIView):
     serializer_class = serializers.UserCreateSerializer
 
@@ -38,14 +28,6 @@ class UserProfileCreateAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-"""While Creating a Trip the following fields are required:
-1- id
-2- title
-3- description
-4- image
-5- country
-6- like
-7- wants_to_visit"""
 
 class TripCreateAPIView(generics.CreateAPIView):
     serializer_class = serializers.TripCreateSerializer
@@ -78,7 +60,7 @@ Create a screen called "Explore" where the user can view all trips.
 Trips have an id, title, description, and image."""
 
 class TripListAPIView(generics.ListAPIView):
-    serializer_class = serializers.TripCreateSerializer
+    serializer_class = serializers.TripListSerializer
     permission_classes = [AllowAny]
     queryset = models.Trip.objects.all()
 
@@ -87,4 +69,24 @@ class TripListAPIView(generics.ListAPIView):
 Display the name of the owner of a trip for every trip on the app.
 This allows the user to view every other trip made by the same owner."""
 
-# class UserProfileListAPIView(generics.ListAPIView):
+class UserProfileListAPIView(generics.ListAPIView):
+    serializer_class = serializers.TripListSerializer
+    permission_classes = [AllowAny]
+    queryset = models.UserProfile.objects.all()
+    lookup_field = "id"
+    lookup_url_kwarg = "user_id"
+    def get_queryset(self):
+        user = self.kwargs.get("user_id")
+        return models.UserProfile.objects.filter(user=user)
+
+
+"""As a user, I can see another person's list of trips in their profile"""
+class UserTripListAPIView(generics.ListAPIView):
+    serializer_class = serializers.UserTripListSerializer
+    permission_classes = [AllowAny]
+    queryset = models.Trip.objects.all()
+    lookup_field = "id"
+    lookup_url_kwarg = "user_id"
+    def get_queryset(self):
+        user = self.kwargs.get("user_id")
+        return models.Trip.objects.filter(owner=user)
