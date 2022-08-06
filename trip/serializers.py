@@ -73,12 +73,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 
-"""As a user, I can create a new trip."""
-
+"""As a user, I can create and validate a new trip. Owner is automatically assigned to the logged-in user. from the frontend I can only update the trip."""
 class TripCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trip
-        fields = ["title", "description", "image", "country", "like", "wants_to_visit"]
+        fields = ["owner","title","description","image","country","like","wants_to_visit"]
+        extra_kwargs = {
+            "user": {"read_only": True}
+        }
     def create(self, validated_data):
         title = validated_data["title"]
         description = validated_data["description"]
@@ -86,9 +88,27 @@ class TripCreateSerializer(serializers.ModelSerializer):
         country = validated_data["country"]
         like = validated_data["like"]
         wants_to_visit = validated_data["wants_to_visit"]
-        new_trip = Trip(title=title, description=description, image=image, country=country, like=like, wants_to_visit=wants_to_visit)
+        owner = self.context["request"].user
+        new_trip = Trip(title=title, description=description, image=image, country=country, like=like, wants_to_visit=wants_to_visit, owner=owner)
         new_trip.save()
-        return validated_data
+        return new_trip
+
+
+
+# class TripCreateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Trip
+#         fields = ["title", "description", "image", "country", "like", "wants_to_visit"]
+#     def create(self, validated_data):
+#         title = validated_data["title"]
+#         description = validated_data["description"]
+#         image = validated_data["image"]
+#         country = validated_data["country"]
+#         like = validated_data["like"]
+#         wants_to_visit = validated_data["wants_to_visit"]
+#         new_trip = Trip(title=title, description=description, image=image, country=country, like=like, wants_to_visit=wants_to_visit)
+#         new_trip.save()
+#         return validated_data
 
 
 """As a user, I can press on the owner of a trip to view their profile
