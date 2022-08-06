@@ -36,7 +36,7 @@ urlpatterns = [
     path("trip/<int:trip_id>/", views.TripUpdateAPIView.as_view(), name="Trip Update"),
     path("trip/<int:trip_id>/delete/", views.TripDeleteAPIView.as_view(), name="Trip Delete"),
     path("trip/", views.TripListAPIView.as_view(), name="Trip List"),
-]
+] 
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -36,13 +36,16 @@ class UserLoginSerializer(serializers.Serializer):
 associated with this new User account. The user should not have to create a Profile.
 My profile has my profile image, bio, and total number of trips. Total number of trips
 should not be stored in the database, it should be calculated in the frontend.
-Feel free to add more fields."""
+Feel free to add more fields.
+register and response token called access"""
+
 
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+    access = serializers.CharField(allow_blank=True, read_only=True)
     class Meta:
         model = User
-        fields = ["username", "password","first_name","last_name","email"]
+        fields = ["username", "password","first_name","last_name","email","access"]
     def create(self, validated_data):
         username = validated_data["username"]
         password = validated_data["password"]
@@ -52,7 +55,12 @@ class UserCreateSerializer(serializers.ModelSerializer):
         new_user = User(username=username, first_name=first_name, last_name=last_name, email=email)
         new_user.set_password(password)
         new_user.save()
+        payload = RefreshToken.for_user(new_user)
+        token = str(payload.access_token)
+        validated_data["access"] = token
         return validated_data
+
+
 
 """After Creating a user, the backend should automatically create an empty Profile"""
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -81,3 +89,8 @@ class TripCreateSerializer(serializers.ModelSerializer):
         new_trip = Trip(title=title, description=description, image=image, country=country, like=like, wants_to_visit=wants_to_visit)
         new_trip.save()
         return validated_data
+
+
+"""As a user, I can press on the owner of a trip to view their profile
+Display the name of the owner of a trip for every trip on the app.
+This allows the user to view every other trip made by the same owner."""

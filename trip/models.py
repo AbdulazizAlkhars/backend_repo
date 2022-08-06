@@ -19,7 +19,7 @@ class UserProfile(models.Model):
     last_name = models.CharField(max_length=100, default="")
     bio = models.TextField(max_length=200, blank=True)
     avatar = models.ImageField(upload_to='images', blank=False, default='/Users/ahmadcoded/Development/project/Travel_App/backend_repo/media/images/Simulator_Screen_Shot_-_iPhone_13_Pro_Max_-_2022-06-22_at_17.46.04.png')
-    total_trips = models.IntegerField(default=0)
+#    total_trips = models.IntegerField(default=0)
     list_of_trips = models.ManyToManyField('Trip', blank=True)
     def __str__(self):
         return self.user.username

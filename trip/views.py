@@ -6,7 +6,14 @@ from trip import serializers
 from trip import models
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from .permissions import IsOwner, IsNotTooSoon
+from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
+from rest_framework import status
+from django.contrib.auth import get_user_model
 
+
+
+"""Register useing the a new user and response with token called "access" """
 
 
 # Create your views here.
@@ -74,3 +81,10 @@ class TripListAPIView(generics.ListAPIView):
     serializer_class = serializers.TripCreateSerializer
     permission_classes = [AllowAny]
     queryset = models.Trip.objects.all()
+
+
+"""As a user, I can press on the owner of a trip to view their profile
+Display the name of the owner of a trip for every trip on the app.
+This allows the user to view every other trip made by the same owner."""
+
+# class UserProfileListAPIView(generics.ListAPIView):
